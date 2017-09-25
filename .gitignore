@@ -1,2 +1,5 @@
 *.pyc
+data/demo/
+data/results/
+data/result
 
