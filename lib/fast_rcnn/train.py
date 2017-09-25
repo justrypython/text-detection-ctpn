@@ -29,10 +29,10 @@ class SolverWrapper(object):
         self.output_dir = output_dir
         self.pretrained_model = pretrained_model
 
-        print 'Computing bounding-box regression targets...'
+        print ('Computing bounding-box regression targets...')
         if cfg.TRAIN.BBOX_REG:
             self.bbox_means, self.bbox_stds = rdl_roidb.add_bbox_regression_targets(roidb)
-        print 'done'
+        print ('done')
 
         # For checkpoint
         self.saver = tf.train.Saver(max_to_keep=100,write_version=tf.train.SaverDef.V2)
@@ -70,7 +70,7 @@ class SolverWrapper(object):
         filename = os.path.join(self.output_dir, filename)
 
         self.saver.save(sess, filename)
-        print 'Wrote snapshot to: {:s}'.format(filename)
+        print ('Wrote snapshot to: {:s}'.format(filename))
 
         if cfg.TRAIN.BBOX_REG and net.layers.has_key('bbox_pred'):
             # restore net to original state
@@ -146,12 +146,12 @@ class SolverWrapper(object):
         if restore:
             try:
                 ckpt = tf.train.get_checkpoint_state(self.output_dir)
-                print 'Restoring from {}...'.format(ckpt.model_checkpoint_path),
-                self.saver.restore(sess, ckpt.model_checkpoint_path)
+                print ('Restoring from {}...'.format(ckpt.model_checkpoint_path),
+                self.saver.restore(sess, ckpt.model_checkpoint_path))
                 stem = os.path.splitext(os.path.basename(ckpt.model_checkpoint_path))[0]
                 restore_iter = int(stem.split('_')[-1])
                 sess.run(global_step.assign(restore_iter))
-                print 'done'
+                print ('done')
             except:
                 raise 'Check your pretrained {:s}'.format(ckpt.model_checkpoint_path)
 
@@ -171,7 +171,7 @@ class SolverWrapper(object):
             blobs = data_layer.forward()
 
             if (iter + 1) % (cfg.TRAIN.DISPLAY) == 0:
-                print 'image: %s' %(blobs['im_name']),
+                print ('image: %s' %(blobs['im_name']),
 
             feed_dict={
                 self.net.data: blobs['data'],
@@ -180,7 +180,7 @@ class SolverWrapper(object):
                 self.net.gt_boxes: blobs['gt_boxes'],
                 self.net.gt_ishard: blobs['gt_ishard'],
                 self.net.dontcare_areas: blobs['dontcare_areas']
-            }
+            })
             res_fetches=[]
             fetch_list = [rpn_cross_entropy,
                           rpn_loss_box,
@@ -219,10 +219,10 @@ class SolverWrapper(object):
 
 
             if (iter) % (cfg.TRAIN.DISPLAY) == 0:
-                print 'iter: %d / %d, total loss: %.4f, rpn_loss_cls: %.4f, rpn_loss_box: %.4f, rpn_loss: %.4f, lr: %f'%\
+                print ('iter: %d / %d, total loss: %.4f, rpn_loss_cls: %.4f, rpn_loss_box: %.4f, rpn_loss: %.4f, lr: %f'%\
                         (iter, max_iters, rpn_loss_cls_value + rpn_loss_box_value + rpn_loss_value ,\
-                         rpn_loss_cls_value, rpn_loss_box_value,rpn_loss_value,lr.eval())
-                print 'speed: {:.3f}s / iter'.format(_diff_time)
+                         rpn_loss_cls_value, rpn_loss_box_value,rpn_loss_value,lr.eval()))
+                print ('speed: {:.3f}s / iter'.format(_diff_time))
 
             if (iter+1) % cfg.TRAIN.SNAPSHOT_ITERS == 0:
                 last_snapshot_iter = iter
@@ -234,11 +234,11 @@ class SolverWrapper(object):
 def get_training_roidb(imdb):
     """Returns a roidb (Region of Interest database) for use in training."""
     if cfg.TRAIN.USE_FLIPPED:
-        print 'Appending horizontally-flipped training examples...'
+        print ('Appending horizontally-flipped training examples...')
         imdb.append_flipped_images()
-        print 'done'
+        print ('done')
 
-    print 'Preparing training data...'
+    print ('Preparing training data...')
     if cfg.TRAIN.HAS_RPN:
         if cfg.IS_MULTISCALE:
             # TODO: fix multiscale training (single scale is already a good trade-off)
@@ -249,7 +249,7 @@ def get_training_roidb(imdb):
             rdl_roidb.prepare_roidb(imdb)
     else:
         rdl_roidb.prepare_roidb(imdb)
-    print 'done'
+    print ('done')
 
     return imdb.roidb
 
@@ -334,6 +334,6 @@ def train_net(network, imdb, roidb, output_dir, log_dir, pretrained_model=None, 
     #config.gpu_options.per_process_gpu_memory_fraction = 0.40
     with tf.Session(config=config) as sess:
         sw = SolverWrapper(sess, network, imdb, roidb, output_dir, logdir= log_dir, pretrained_model=pretrained_model)
-        print 'Solving...'
+        print ('Solving...')
         sw.train_model(sess, max_iters, restore=restore)
-        print 'done solving'
+        print ('done solving')
