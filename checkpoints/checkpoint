@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/zhaoke/justrypython/text-detection-ctpn/checkpoints/model2_final.ckpt"
+all_model_checkpoint_paths: "/home/zhaoke/justrypython/text-detection-ctpn/checkpoints/model2_final.ckpt"

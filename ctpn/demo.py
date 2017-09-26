@@ -86,7 +86,7 @@ if __name__ == '__main__':
     # load model
     print ('Loading network {:s}... '.format("VGGnet_test")),
     saver = tf.train.Saver()
-    saver.restore(sess, os.path.join(os.getcwd(),"checkpoints/model_final.ckpt"))
+    saver.restore(sess, os.path.join(os.getcwd(),"checkpoints/model2_final.ckpt"))
     print (' done.')
 
     # Warmup on a dummy image
