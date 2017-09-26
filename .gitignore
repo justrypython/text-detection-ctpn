@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 *.pyc
+lib/*.pyc
 lib_0
 data
 lib/build/
 checkpoints/model2_final.ckpt.*
-=======
-*.pyc
-data/demo/
-data/results/
-data/result
-
->>>>>>> bb4142e43a4ee8c3f539b7b17ed9649d3d973dd8
