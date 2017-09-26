@@ -171,16 +171,16 @@ class SolverWrapper(object):
             blobs = data_layer.forward()
 
             if (iter + 1) % (cfg.TRAIN.DISPLAY) == 0:
-                print 'image: %s' %(blobs['im_name']),
+                print 'image: %s\n' %(blobs['im_name']),
 
-                feed_dict={
-                    self.net.data: blobs['data'],
-                    self.net.im_info: blobs['im_info'],
-                    self.net.keep_prob: 0.5,
-                    self.net.gt_boxes: blobs['gt_boxes'],
-                    self.net.gt_ishard: blobs['gt_ishard'],
-                    self.net.dontcare_areas: blobs['dontcare_areas']
-                }
+            feed_dict={
+                self.net.data: blobs['data'],
+                self.net.im_info: blobs['im_info'],
+                self.net.keep_prob: 0.5,
+                self.net.gt_boxes: blobs['gt_boxes'],
+                self.net.gt_ishard: blobs['gt_ishard'],
+                self.net.dontcare_areas: blobs['dontcare_areas']
+            }
             res_fetches=[]
             fetch_list = [rpn_cross_entropy,
                           rpn_loss_box,

@@ -4,3 +4,5 @@ lib_0
 data
 lib/build/
 checkpoints/model2_final.ckpt.*
+download
+logs
